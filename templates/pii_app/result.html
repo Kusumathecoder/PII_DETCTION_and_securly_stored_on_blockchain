@@ -1,0 +1,231 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-8">
+    <h4>Detections</h4>
+
+    {% if detections %}
+      <form id="piiForm">
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th>Select</th>
+              <th>Type</th>
+              <th>Sample</th>
+              <th>Hash</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for d in detections %}
+              <tr>
+                <td>
+                  <input type="checkbox" name="pii_select" value="{{ d.hash }}" {% if d.type == 'PAN' %}checked{% endif %}>
+                </td>
+                <td>{{ d.type }}</td>
+                <td>{{ d.match|truncatechars:40 }}</td>
+                <td><code>{{ d.hash }}</code></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <div class="mb-3">
+          <button type="button" id="connectWalletBtn" class="btn btn-outline-primary">Connect Wallet</button>
+          <button type="button" id="storeEthereumBtn" class="btn btn-warning">Store Selected Hashes on Ethereum</button>
+        </div>
+
+        <div id="txStatus" class="mb-3"></div>
+      </form>
+
+      <!-- JSON data for JS -->
+      <script id="detections-data" type="application/json">
+        {{ detections_json|safe }}
+      </script>
+
+      <!-- Include ethers.js -->
+      <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
+
+      <script>
+      (async () => {
+          const connectBtn = document.getElementById('connectWalletBtn');
+          const storeBtn = document.getElementById('storeEthereumBtn');
+          const statusDiv = document.getElementById('txStatus');
+          const detectionsScript = document.getElementById('detections-data');
+
+          if (!connectBtn || !storeBtn || !detectionsScript) return;
+
+          let payload = {};
+          try {
+              payload = JSON.parse(detectionsScript.textContent || '{}');
+          } catch (err) {
+              console.error("Invalid JSON in detections-data", err);
+              payload = {};
+          }
+
+          const documentId = payload.document_id;
+          const detections = Array.isArray(payload.detections) ? payload.detections : [];
+
+          const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+          const contractAbi = [
+              {
+                  "inputs": [
+                      { "internalType": "bytes32[]", "name": "hashes", "type": "bytes32[]" }
+                  ],
+                  "name": "storeMultiplePii",
+                  "outputs": [],
+                  "stateMutability": "nonpayable",
+                  "type": "function"
+              }
+          ];
+
+          let provider = null;
+          let signer = null;
+          let contract = null;
+
+          async function connectWallet() {
+              if (!window.ethereum) {
+                  statusDiv.innerHTML = `<div class="alert alert-danger">Metamask not detected.</div>`;
+                  return;
+              }
+              try {
+                  // ✅ Ensure correct local network (Hardhat default: 0x7a69)
+                  await window.ethereum.request({
+                      method: 'wallet_switchEthereumChain',
+                      params: [{ chainId: '0x7a69' }]
+                  }).catch(async (err) => {
+                      if (err.code === 4902) {
+                          await window.ethereum.request({
+                              method: 'wallet_addEthereumChain',
+                              params: [{
+                                  chainId: '0x7a69',
+                                  chainName: 'Localhost 8545',
+                                  rpcUrls: ['http://127.0.0.1:8545']
+                              }]
+                          });
+                      }
+                  });
+
+                  // ✅ Request wallet only once
+                  const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                  const addr = accounts[0];
+
+                  provider = new ethers.providers.Web3Provider(window.ethereum);
+                  signer = provider.getSigner();
+                  contract = new ethers.Contract(contractAddress, contractAbi, signer);
+
+                  statusDiv.innerHTML = `<div class="alert alert-success">Connected: ${addr}</div>`;
+              } catch (err) {
+                  console.error(err);
+                  statusDiv.innerHTML = `<div class="alert alert-danger">Connection failed: ${err.message}</div>`;
+              }
+          }
+
+          async function storeHashes() {
+              if (!contract) {
+                  statusDiv.innerHTML = "⚠️ Connect wallet first.";
+                  return;
+              }
+
+              const selectedCheckboxes = Array.from(document.querySelectorAll('input[name="pii_select"]:checked'));
+              if (selectedCheckboxes.length === 0) {
+                  alert("Select at least one PII to store.");
+                  return;
+              }
+
+              const selectedDetections = selectedCheckboxes
+                  .map(cb => detections.find(d => d.hash === cb.value))
+                  .filter(Boolean);
+
+              // ✅ Step 1: Double-hash using keccak256
+              const doubleHashes = selectedDetections.map(d => {
+                  const baseHash = d.hash.startsWith("0x") ? d.hash : "0x" + d.hash;
+                  return ethers.utils.keccak256(baseHash);
+              });
+
+              // ✅ Step 2: Format for bytes32
+              const bytes32Hashes = doubleHashes.map(h => ethers.utils.hexZeroPad(h, 32));
+
+              console.log("Original Hashes:", selectedDetections.map(d => d.hash));
+              console.log("Double Hashes:", doubleHashes);
+
+              try {
+                  statusDiv.innerHTML = "⏳ Sending transaction to Ethereum...";
+
+                  const tx = await contract.storeMultiplePii(bytes32Hashes);
+                  await tx.wait();
+
+                  // ✅ Step 3: Record in Django backend
+                  await fetch('/blockchain/add_block/', {
+                      method: 'POST',
+                      headers: { 
+                          'Content-Type': 'application/json', 
+                          'X-CSRFToken': getCookie('csrftoken') 
+                      },
+                      body: JSON.stringify(selectedDetections.map((d, i) => ({
+                          type: d.type,
+                          document_id: documentId,
+                          original_hash: d.hash,
+                          double_hash: doubleHashes[i],
+                          timestamp: new Date().toISOString()
+                      })))
+                  });
+
+                  // ✅ Step 4: Show confirmation with hashes and transaction hash
+                  const hashListHTML = doubleHashes
+                      .map(h => `<li><code>${h}</code></li>`)
+                      .join('');
+
+                  statusDiv.innerHTML = `
+                      <div class="alert alert-success">
+                          ✅ Selected PII double-hashed and stored successfully.<br><br>
+                          <strong>Double Hashes Stored:</strong>
+                          <ul>${hashListHTML}</ul>
+                          <small>Transaction hash: <code>${tx.hash}</code></small>
+                      </div>
+                  `;
+              } catch (err) {
+                  console.error(err);
+                  statusDiv.innerHTML = `<div class="alert alert-danger">Transaction failed: ${err.message}</div>`;
+              }
+          }
+
+          function getCookie(name) {
+              let cookieValue = null;
+              if (document.cookie && document.cookie !== '') {
+                  const cookies = document.cookie.split(';');
+                  for (let cookie of cookies) {
+                      cookie = cookie.trim();
+                      if (cookie.startsWith(name + '=')) {
+                          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                          break;
+                      }
+                  }
+              }
+              return cookieValue;
+          }
+
+          connectBtn.addEventListener('click', connectWallet);
+          storeBtn.addEventListener('click', storeHashes);
+      })();
+      </script>
+
+    {% else %}
+      <p>No PII detected.</p>
+    {% endif %}
+
+    <a class="btn btn-success" href="{% url 'pii_app:pii_download' document.id %}">
+      Download Redacted File
+    </a>
+  </div>
+
+  <div class="col-md-4">
+    <h5>Original Preview</h5>
+    <pre class="p-2 bg-light border" style="max-height:300px; overflow:auto;">{{ original_preview }}</pre>
+
+    <h5 class="mt-3">Redacted Preview</h5>
+    <pre class="p-2 bg-light border" style="max-height:300px; overflow:auto;">{{ redacted_preview }}</pre>
+  </div>
+</div>
+{% endblock %}

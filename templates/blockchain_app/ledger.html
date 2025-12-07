@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h4>Blockchain Ledger</h4>
+
+<h5>Add Transaction</h5>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-primary btn-sm">Add</button>
+</form>
+<hr>
+
+<h5>Blocks</h5>
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th>Index</th>
+            <th>Timestamp</th>
+            <th>Data</th>
+            <th>Hash</th>
+            <th>Prev Hash</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for block in blocks %}
+        <tr>
+            <td>{{ block.index }}</td>
+            <td>{{ block.timestamp }}</td>
+            <td>{{ block.data }}</td>
+            <td><code>{{ block.hash }}</code></td>
+            <td><code>{{ block.previous_hash }}</code></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h5>Ledger Entries</h5>
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th>Transaction ID</th>
+            <th>PII Data</th>
+            <th>Hash</th>
+            <th>Timestamp</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for entry in ledger_entries %}
+        <tr>
+            <td>{{ entry.transaction_id }}</td>
+            <td>{{ entry.pii_data }}</td>
+            <td><code>{{ entry.hash }}</code></td>
+            <td>{{ entry.timestamp }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,67 @@
+body {
+    padding-bottom: 40px;
+}
+pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+.landing-container {
+    text-align: center;
+    padding: 100px 20px;
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+    color: white;
+    min-height: 100vh;
+}
+
+.landing-container header h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.landing-container header p {
+    font-size: 20px;
+    margin-bottom: 40px;
+}
+
+.landing-container .buttons a {
+    margin: 10px;
+    padding: 15px 30px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.btn-primary { background-color: #ff7e5f; color: white; }
+.btn-secondary { background-color: #feb47b; color: white; }
+
+.features {
+    display: flex;
+    justify-content: center;
+    margin-top: 60px;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.feature {
+    background-color: rgba(255,255,255,0.1);
+    padding: 30px;
+    border-radius: 10px;
+    width: 250px;
+}
+
+/* static/css/style.css - simple, clean styling */
+body { font-family: Arial, Helvetica, sans-serif; margin:0; color:#222; background:#f7f7fb; }
+.site-header { background: #fff; border-bottom: 1px solid #eee; padding: 12px 20px; display:flex; justify-content:space-between; align-items:center; }
+.brand { font-weight:700; color:#6a2c91; text-decoration:none; font-size:18px; }
+.nav-links a { margin-left:12px; text-decoration:none; color:#333;}
+.main-content { padding:40px 20px; max-width:1000px; margin:0 auto; }
+.hero { background: linear-gradient(90deg,#7b2cf1,#ff6b6b); color:#fff; padding:60px 20px; border-radius:8px; text-align:center; }
+.hero h1 { margin:0 0 12px; font-size:36px; }
+.btn, .btn-primary, .btn-outline { padding:10px 16px; border-radius:6px; text-decoration:none; display:inline-block; }
+.btn-primary { background:#6a2c91; color:#fff; border:none; }
+.btn-outline { border:1px solid #6a2c91; color:#6a2c91; background:transparent; }
+.form-card { background:#fff; padding:22px; border-radius:8px; box-shadow:0 6px 16px rgba(0,0,0,0.06); max-width:520px; margin:20px auto;}
+.dashboard img { border-radius:6px; }
+.messages { margin-bottom:16px; }
+.messages .message { padding:10px; border-radius:6px; margin-bottom:8px; background:#e3f6ff; }
+.footer { text-align:center; padding:18px; color:#666; margin-top:40px; }
