@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # PII Redaction & Ethereum (Metamask) — Run Instructions
 
 Quick steps to run the Django app locally and deploy the Solidity contract (AadhaarLedger) so Metamask can store hashes.
@@ -101,5 +101,5 @@ Files provided to help:
 
 That's all — start the Django server, deploy the contract, configure the front-end address, and use Metamask to store the PII hashes.
 =======
-# PII_DETCTION_and_securly_stored_on_blockchain
->>>>>>> 5a2a9fb8cd61054f0547e4eff728ebdd1a975f22
+
+
