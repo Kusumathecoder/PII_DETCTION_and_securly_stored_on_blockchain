@@ -1,0 +1,70 @@
+{% extends "authentication/base.html" %}
+{% block content %}
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80vh; background: linear-gradient(135deg, #f9f9fb, #f0f0ff); padding: 20px; font-family: 'Arial', sans-serif;">
+
+  <!-- Hero Section -->
+  <h1 style="color: #5a0e7a; font-size: 48px; font-weight: 900; margin-bottom: 30px; text-align: center; letter-spacing: 1.5px; animation: fadeInDown 1s ease-in-out;">
+    PII Protection
+  </h1>
+
+  <div style="background: white; padding: 50px; border-radius: 20px; box-shadow: 0px 12px 30px rgba(0,0,0,0.12); max-width: 750px; text-align: center; transition: transform 0.3s, box-shadow 0.3s; animation: fadeInUp 1.2s ease-in-out;">
+    <h2 style="color: #7d2ae8; font-size: 30px; font-weight: 700; margin-bottom: 20px;">
+      Protect Your Personal Data
+    </h2>
+    <p style="font-size: 18px; line-height: 1.8; color: #444; margin-bottom: 30px;">
+      Securely upload and manage your sensitive files with our advanced PII Protection platform.  
+      We use <strong>OTP login</strong>, <strong>encrypted storage</strong>, and <strong>secure document handling</strong>.
+    </p>
+    <a href="{% url 'authentication:login' %}" 
+       style="background: #7d2ae8; color: white; padding: 14px 35px; font-size: 18px; border-radius: 10px; text-decoration: none; transition: all 0.3s; display: inline-block; box-shadow: 0 5px 15px rgba(125, 42, 232, 0.3);"
+       onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 10px 25px rgba(125, 42, 232, 0.4)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(125, 42, 232, 0.3)';">
+      Get Started
+    </a>
+  </div>
+
+  <!-- PII Info Section -->
+  <div style="margin-top: 60px; max-width: 800px; background: #ffffffcc; padding: 40px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); animation: fadeIn 1.5s ease-in-out;">
+    <h2 style="color: #5a0e7a; font-size: 28px; font-weight: 700; margin-bottom: 20px; text-align: center;">
+      What is PII (Personally Identifiable Information) in India?
+    </h2>
+    <p style="font-size: 17px; line-height: 1.8; color: #333; margin-bottom: 15px;">
+      Personally Identifiable Information (PII) refers to any data that can directly or indirectly identify an individual. In India, this includes:
+    </p>
+    <ul style="font-size: 17px; color: #444; margin-left: 20px; margin-bottom: 20px;">
+      <li><strong>Direct identifiers:</strong> Name, phone number, email, residential address, Aadhaar, PAN, passport details.</li>
+      <li><strong>Sensitive personal data:</strong> Financial info, health records, biometrics, passwords, official IDs.</li>
+      <li><strong>Indirect identifiers:</strong> IP address, location data, device IDs when combined with other information.</li>
+    </ul>
+    <p style="font-size: 17px; line-height: 1.8; color: #333; margin-bottom: 15px;">
+      India’s Digital Personal Data Protection Act (DPDP Act, 2023) governs how such data must be collected, processed, and stored. Organizations must collect only necessary data and ensure privacy.
+    </p>
+    <h3 style="color: #7d2ae8; font-size: 22px; font-weight: 700; margin-top: 25px; margin-bottom: 15px;">
+      Why is Protecting PII Important?
+    </h3>
+    <ul style="font-size: 17px; color: #444; margin-left: 20px;">
+      <li><strong>Privacy & Trust:</strong> Builds user trust by safeguarding information.</li>
+      <li><strong>Legal Compliance:</strong> Aligns with Indian data protection laws, avoiding penalties.</li>
+      <li><strong>Cybersecurity:</strong> Prevents misuse in identity theft, fraud, and phishing.</li>
+      <li><strong>User Control:</strong> Gives individuals control over their data.</li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- Inline Animations -->
+<style>
+  @keyframes fadeInDown {
+    0% { opacity: 0; transform: translateY(-40px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(40px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+</style>
+{% endblock %}

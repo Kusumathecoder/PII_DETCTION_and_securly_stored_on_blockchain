@@ -1,0 +1,139 @@
+{% extends "authentication/base.html" %}
+{% block content %}
+
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80vh; padding: 30px; background: linear-gradient(135deg, #f8f9fc, #eef0ff); font-family: 'Arial', sans-serif;">
+
+  <!-- Hero Section -->
+  <h2 style="text-align:center; font-size:40px; color:#5a0e7a; font-weight:800; margin-bottom:20px; animation: fadeInDown 1s ease-in-out;">
+    Protect Your Personal Data
+  </h2>
+  <p style="text-align:center; font-size:18px; color:#333; line-height:1.6; max-width:750px; animation: fadeInUp 1s ease-in-out 0.3s; animation-fill-mode: both;">
+    Securely upload and manage your sensitive files with our advanced PII Protection platform.
+    We use <strong>OTP login</strong>, <strong>encrypted storage</strong>, and <strong>secure document handling</strong> to comply with India’s <strong>DPDP Act (2023)</strong>.
+  </p>
+
+  <div style="text-align:center; margin-top:25px; animation: fadeInUp 1s ease-in-out 0.5s; animation-fill-mode: both;">
+    <a href="{% url 'authentication:signup' %}" 
+       style="padding:12px 28px; background:#6f42c1; color:white; text-decoration:none; border-radius:8px; font-size:18px; transition: all 0.3s; box-shadow:0 5px 15px rgba(111,66,193,0.3);"
+       onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 10px 25px rgba(111,66,193,0.4)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(111,66,193,0.3)';">
+       Get Started
+    </a>
+  </div>
+
+  <!-- About Section -->
+  <div style="margin-top:80px; max-width:900px; text-align:center; animation: fadeIn 1.5s ease-in-out;">
+    <h3 style="color:#5a0e7a; font-size:32px; font-weight:700; margin-bottom:20px;">
+      About Our Platform
+    </h3>
+    <p style="font-size:17px; line-height:1.8; color:#333;">
+      We are dedicated to protecting your <strong>Personally Identifiable Information (PII)</strong> in compliance with the <strong>Digital Personal Data Protection Act (DPDP), 2023</strong> of India.  
+      Our platform ensures data is <strong>minimized, masked, and encrypted</strong>, giving you control and peace of mind.
+    </p>
+  </div>
+
+  <!-- Services Section -->
+  <div style="margin-top:70px; max-width:1000px; animation: fadeInUp 1.5s ease-in-out;">
+    <h3 style="color:#5a0e7a; font-size:32px; font-weight:700; text-align:center; margin-bottom:40px;">
+      Our Services
+    </h3>
+    <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:25px;">
+      <div style="flex:1 1 250px; background:#fff; padding:25px; border-radius:12px; box-shadow:0 6px 15px rgba(0,0,0,0.1); transition:0.3s; cursor:pointer;"
+           onmouseover="this.style.transform='translateY(-6px)';" onmouseout="this.style.transform='translateY(0)';">
+        <h4 style="color:#6f42c1; font-size:20px; font-weight:700; margin-bottom:10px;">🔒 Secure Uploads</h4>
+        <p style="color:#444; font-size:15px;">Upload Aadhaar, PAN, Passport, and other documents. Identifiers are <strong>masked</strong> (e.g., XXXX-XXXX-1234).</p>
+      </div>
+      <div style="flex:1 1 250px; background:#fff; padding:25px; border-radius:12px; box-shadow:0 6px 15px rgba(0,0,0,0.1); transition:0.3s; cursor:pointer;"
+           onmouseover="this.style.transform='translateY(-6px)';" onmouseout="this.style.transform='translateY(0)';">
+        <h4 style="color:#6f42c1; font-size:20px; font-weight:700; margin-bottom:10px;">🛡 End-to-End Encryption</h4>
+        <p style="color:#444; font-size:15px;">All data stored using AES-256 encryption, ensuring safety against unauthorized access.</p>
+      </div>
+      <div style="flex:1 1 250px; background:#fff; padding:25px; border-radius:12px; box-shadow:0 6px 15px rgba(0,0,0,0.1); transition:0.3s; cursor:pointer;"
+           onmouseover="this.style.transform='translateY(-6px)';" onmouseout="this.style.transform='translateY(0)';">
+        <h4 style="color:#6f42c1; font-size:20px; font-weight:700; margin-bottom:10px;">📱 OTP Authentication</h4>
+        <p style="color:#444; font-size:15px;">Login and file access only via verified OTP, preventing unauthorized access.</p>
+      </div>
+      <div style="flex:1 1 250px; background:#fff; padding:25px; border-radius:12px; box-shadow:0 6px 15px rgba(0,0,0,0.1); transition:0.3s; cursor:pointer;"
+           onmouseover="this.style.transform='translateY(-6px)';" onmouseout="this.style.transform='translateY(0)';">
+        <h4 style="color:#6f42c1; font-size:20px; font-weight:700; margin-bottom:10px;">⚖ Compliance Ready</h4>
+        <p style="color:#444; font-size:15px;">Built to align with <strong>India’s DPDP Act (2023)</strong> and global best practices.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ Section -->
+  <div style="margin-top:80px; max-width:900px; background:#ffffffcc; padding:40px; border-radius:15px; box-shadow:0 8px 25px rgba(0,0,0,0.1); animation: fadeIn 2s ease-in-out;">
+    <h3 style="color:#5a0e7a; font-size:28px; font-weight:700; margin-bottom:25px; text-align:center;">
+      Frequently Asked Questions
+    </h3>
+    <ul style="list-style:none; padding:0; font-size:16px; line-height:1.8; color:#333;">
+      <li><strong>Q:</strong> What happens when I upload my Aadhaar or PAN document?<br>
+          <strong>A:</strong> Sensitive identifiers are masked (e.g., XXXX-XXXX-4321) before storage.</li><br>
+      <li><strong>Q:</strong> Is my data encrypted?<br>
+          <strong>A:</strong> Yes, we use industry-grade AES-256 encryption.</li><br>
+      <li><strong>Q:</strong> Do you share my data?<br>
+          <strong>A:</strong> No, your personal data is never shared with third parties without consent.</li><br>
+      <li><strong>Q:</strong> Which Indian law governs PII?<br>
+          <strong>A:</strong> The <strong>Digital Personal Data Protection Act, 2023 (DPDP Act)</strong>.</li>
+    </ul>
+  </div>
+
+  <!-- Footer -->
+  <footer style="margin-top:100px; width:100%; background:#4b1d80; color:white; padding:50px 20px 30px; animation: fadeInUp 2s ease-in-out;">
+    <div style="max-width:1100px; margin:auto; display:flex; flex-wrap:wrap; justify-content:space-between; gap:40px;">
+
+      <!-- About -->
+      <div style="flex:1 1 280px;">
+        <h4 style="font-size:20px; font-weight:700; margin-bottom:15px;">About</h4>
+        <p style="font-size:15px; line-height:1.6; color:#e4dff5;">
+          Our platform ensures <strong>safe handling of Indian PII</strong> with OTP authentication, masking, 
+          and encrypted storage. Built to comply with <strong>India’s DPDP Act (2023)</strong>.
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div style="flex:1 1 180px;">
+        <h4 style="font-size:20px; font-weight:700; margin-bottom:15px;">Quick Links</h4>
+        <ul style="list-style:none; padding:0; margin:0;">
+          <li style="margin-bottom:8px;"><a href="#" style="color:#e4dff5; text-decoration:none; transition:0.3s;" onmouseover="this.style.color='white';" onmouseout="this.style.color='#e4dff5';">Home</a></li>
+          <li style="margin-bottom:8px;"><a href="#" style="color:#e4dff5; text-decoration:none; transition:0.3s;" onmouseover="this.style.color='white';" onmouseout="this.style.color='#e4dff5';">About</a></li>
+          <li style="margin-bottom:8px;"><a href="#" style="color:#e4dff5; text-decoration:none; transition:0.3s;" onmouseover="this.style.color='white';" onmouseout="this.style.color='#e4dff5';">Services</a></li>
+          <li style="margin-bottom:8px;"><a href="#" style="color:#e4dff5; text-decoration:none; transition:0.3s;" onmouseover="this.style.color='white';" onmouseout="this.style.color='#e4dff5';">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Legal -->
+      <div style="flex:1 1 180px;">
+        <h4 style="font-size:20px; font-weight:700; margin-bottom:15px;">Legal</h4>
+        <ul style="list-style:none; padding:0; margin:0;">
+          <li style="margin-bottom:8px;"><a href="#" style="color:#e4dff5; text-decoration:none; transition:0.3s;" onmouseover="this.style.color='white';" onmouseout="this.style.color='#e4dff5';">Privacy Policy</a></li>
+          <li style="margin-bottom:8px;"><a href="#" style="color:#e4dff5; text-decoration:none; transition:0.3s;" onmouseover="this.style.color='white';" onmouseout="this.style.color='#e4dff5';">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div style="margin-top:40px; border-top:1px solid rgba(255,255,255,0.2); padding-top:20px; text-align:center; font-size:14px; color:#d1c7ec;">
+      © 2025 PII Protection Platform | All Rights Reserved
+    </div>
+  </footer>
+
+</div>
+
+<!-- Inline Animations -->
+<style>
+  @keyframes fadeInDown {
+    0% { opacity: 0; transform: translateY(-40px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(40px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+</style>
+
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "authentication/base.html" %}
+{% block content %}
+<div class="form-card">
+  <h2>Verify OTP</h2>
+  <p>Enter the OTP sent to your phone and email.</p>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.code }}   <!-- this directly renders the OTPForm field -->
+    <button type="submit">Verify</button>
+  </form>
+  <p><a href="{% url 'authentication:login' %}">Back to login</a></p>
+</div>
+{% endblock %}

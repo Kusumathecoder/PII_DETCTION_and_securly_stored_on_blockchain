@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PII Protection</title>
+  <style>
+    body { margin:0; font-family: Arial, sans-serif; background:#f8f9fa; }
+    .navbar { display:flex; justify-content:space-between; align-items:center; background:#fff; padding:10px 30px; box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+    .navbar h1 a { text-decoration:none; color:purple; }
+    .navbar ul { list-style:none; display:flex; margin:0; padding:0; }
+    .navbar li { margin-left:20px; }
+    .navbar a { text-decoration:none; color:#333; }
+    .btn-login, .btn-signup, .btn-logout {
+      padding:6px 12px; border-radius:5px; font-weight:bold; text-decoration:none;
+    }
+    .btn-login { background:#6f42c1; color:white; }
+    .btn-signup { border:2px solid #6f42c1; color:#6f42c1; }
+    .btn-logout { background:#dc3545; color:white; }
+    .container { max-width:800px; margin:50px auto; background:white; padding:30px; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.1);}
+    h2 { color:#6f42c1; margin-bottom:20px; }
+    .form-card input, .form-card button { display:block; width:100%; padding:10px; margin:10px 0; border:1px solid #ddd; border-radius:5px;}
+    .form-card button { background:#6f42c1; color:white; border:none; cursor:pointer; }
+    .form-card button:hover { background:#563d7c; }
+    .messages { margin-bottom:15px; }
+    .messages li { list-style:none; padding:10px; margin:5px 0; border-radius:5px; }
+    .messages .success { background:#d4edda; color:#155724; }
+    .messages .error { background:#f8d7da; color:#721c24; }
+    .messages .info { background:#d1ecf1; color:#0c5460; }
+    .messages .warning { background:#fff3cd; color:#856404; }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <h1><a href="{% url 'authentication:landing' %}">PII Protection</a></h1>
+      <ul>
+        <li><a href="{% url 'authentication:landing' %}">Home</a></li>
+        {% if user.is_authenticated %}
+          <li><a href="{% url 'authentication:home' %}">Dashboard</a></li>
+          <li><a href="{% url 'authentication:upload' %}">Upload</a></li>
+          <li><a href="{% url 'authentication:logout' %}" class="btn-logout">Logout</a></li>
+        {% else %}
+          <li><a href="{% url 'authentication:login' %}" class="btn-login">Login</a></li>
+          <li><a href="{% url 'authentication:signup' %}" class="btn-signup">Sign Up</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="container">
+      {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+</body>
+</html>
